@@ -42,6 +42,8 @@ public class Prog1A {
         private int numDataEntries;
         private int numEntries;
 
+        public static DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+
         /**
          * Constructor based on a CSV file. Assumes each line in the CSV has at least as many
          * elements as the first line, which declares the fields.
@@ -57,17 +59,16 @@ public class Prog1A {
                 maxFieldSize = new int[fieldNames.length];
                 numDataEntries = 0;
                 Date previous = new Date(Long.MIN_VALUE);
-                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
                 TreeSet<Integer> lineIsOut = new TreeSet<>();
                 int lineCounter = -1;
                 numEntries = 0;
                 while((line = input.readLine()) != null) {
                     lineCounter++;
-                    String dataValues[] = line.split(",");
+                    String dataValues[] = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
                     try {
-                        Date thisDate = dateFormat.parse(dataValues[4]);
+                        Date thisDate = DATE_FORMAT.parse(dataValues[4]);
                         if (previous.after(thisDate)) {
                             lineIsOut.add(lineCounter);
                             continue;
@@ -101,7 +102,7 @@ public class Prog1A {
                 while((line = input.readLine()) != null) {
                     lineCounter++;
                     if (lineIsOut.contains(lineCounter)) continue;
-                    String dataValues[] = line.split(",");
+                    String dataValues[] = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     for (int i = 0; i < fieldNames.length; i++) {
                         if (fieldIsString[i]) {
                             data[entryIndex] = String.format("%-" + maxFieldSize[i] + "s", dataValues[i]);
