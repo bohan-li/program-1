@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7e0f077-89db-4e72-bf4b-fffc0e8ff43a" name="Default Changelist" comment="" />
+    <list default="true" id="e7e0f077-89db-4e72-bf4b-fffc0e8ff43a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/BinaryIO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Prog1A.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Prog1B.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -19,9 +31,42 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../classwork/CSC 460" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+  </component>
+  <component name="RunManager" selected="Application.Prog1B">
+    <configuration name="Prog1A" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Prog1A" />
+      <module name="Program1" />
+      <option name="PROGRAM_PARAMETERS" value="src/SCDB2019.csv" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Prog1B" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Prog1B" />
+      <module name="Program1" />
+      <option name="PROGRAM_PARAMETERS" value="SCDB2019.bin" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="BinaryIO" />
+      <module name="Program1" />
+      <option name="PROGRAM_PARAMETERS" value="SCDB2019.csv" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Prog1A" />
+      <item itemvalue="Application.Prog1B" />
+      <item itemvalue="Application.test" />
+    </list>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -53,9 +98,85 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="179" key="#Project_Structure/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1579534898680" />
-    <state x="661" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1579534097248">
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580105910101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="661" y="345" key="com.intellij.ide.util.TipDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1579534097248" />
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105910101" />
+    <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1580065783835">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065783835" />
+    <state x="765" y="222" key="#com.intellij.ide.util.MemberChooser" timestamp="1579572359588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="222" key="#com.intellij.ide.util.MemberChooser/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1579572359588" />
+    <state x="803" y="418" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1580066012628">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="803" y="418" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580066012628" />
+    <state x="740" y="247" key="FileChooserDialogImpl" timestamp="1580065844885">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="247" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065844885" />
+    <state width="1338" height="328" key="GridCell.Tab.0.bottom" timestamp="1580105914622">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.center" timestamp="1580105914622">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.left" timestamp="1580105914622">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.right" timestamp="1580105914622">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.1.bottom" timestamp="1580105914686">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.center" timestamp="1580105914686">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.left" timestamp="1580105914686">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.right" timestamp="1580105914686">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1338" height="328" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state x="461" y="163" key="SettingsEditor" timestamp="1580065776830">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="163" key="SettingsEditor/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065776830" />
+    <state x="661" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1580066000450">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="661" y="345" key="com.intellij.ide.util.TipDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580066000450" />
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1580103911883">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580103911883" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Prog1B.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Prog1A.java</url>
+          <line>71</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
