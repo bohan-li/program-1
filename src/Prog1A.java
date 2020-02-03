@@ -93,6 +93,7 @@ public class Prog1A {
                 }
                 input.close();
 
+                PrintWriter output = new PrintWriter(new File("out.csv"));
                 data = new Object[numDataEntries];
 
                 input = new BufferedReader(new FileReader(csvFilename));
@@ -102,6 +103,7 @@ public class Prog1A {
                 while((line = input.readLine()) != null) {
                     lineCounter++;
                     if (lineIsOut.contains(lineCounter)) continue;
+                    output.write(line + "\n");
                     String dataValues[] = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     for (int i = 0; i < fieldNames.length; i++) {
                         if (fieldIsString[i]) {
@@ -116,6 +118,7 @@ public class Prog1A {
                         entryIndex++;
                     }
                 }
+                output.close();
                 input.close();
             } catch (IOException ex) {
                 ex.printStackTrace();

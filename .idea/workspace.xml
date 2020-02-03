@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7e0f077-89db-4e72-bf4b-fffc0e8ff43a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Prog2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Program1/Prog1B$BinaryFileDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Program1/Prog1B$BinaryFileDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Program1/Prog1B.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Program1/Prog1B.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Prog1A.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Prog1A.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Prog1B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Prog1B.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Prog2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Prog2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +37,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
-  <component name="RunManager" selected="Application.Prog1B">
+  <component name="RunManager" selected="Application.Prog2">
     <configuration name="Prog1A" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Prog1A" />
       <module name="Program1" />
@@ -55,6 +54,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Prog2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Prog2" />
+      <module name="Program1" />
+      <option name="PROGRAM_PARAMETERS" value="SCDB2019.bin" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BinaryIO" />
       <module name="Program1" />
@@ -64,6 +71,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Prog2" />
       <item itemvalue="Application.Prog1A" />
       <item itemvalue="Application.Prog1B" />
       <item itemvalue="Application.test" />
@@ -99,19 +107,23 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="179" key="#Project_Structure/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1579534898680" />
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580105910101">
+    <state x="414" y="176" width="1091" height="688" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580686237726">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105910101" />
+    <state x="414" y="176" width="1091" height="688" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580686237726" />
     <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1580065783835">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065783835" />
-    <state x="612" y="176" key="#com.intellij.ide.util.MemberChooser" timestamp="1580153697979">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="765" y="222" key="#com.intellij.ide.util.MemberChooser" timestamp="1580669190704">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="222" key="#com.intellij.ide.util.MemberChooser/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1579572359588" />
+    <state x="765" y="222" key="#com.intellij.ide.util.MemberChooser/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580669190704" />
     <state x="612" y="176" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1580153697979" />
+    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1580686180451">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580686180451" />
     <state x="803" y="418" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1580066012628">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -120,71 +132,67 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="247" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065844885" />
-    <state width="1493" height="157" key="GridCell.Tab.0.bottom" timestamp="1580170209151">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.0.bottom" timestamp="1580714560374">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714560374" />
     <state width="1493" height="157" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580170209151" />
-    <state width="1493" height="157" key="GridCell.Tab.0.center" timestamp="1580170209150">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.0.center" timestamp="1580714560374">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714560374" />
     <state width="1493" height="157" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580170209150" />
-    <state width="1493" height="157" key="GridCell.Tab.0.left" timestamp="1580170209150">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.0.left" timestamp="1580714560374">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714560374" />
     <state width="1493" height="157" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580170209150" />
-    <state width="1493" height="157" key="GridCell.Tab.0.right" timestamp="1580170209151">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.0.right" timestamp="1580714560374">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914622" />
+    <state width="1338" height="328" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714560374" />
     <state width="1493" height="157" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580170209151" />
-    <state width="1493" height="242" key="GridCell.Tab.1.bottom" timestamp="1580165727360">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.1.bottom" timestamp="1580714567225">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714567225" />
     <state width="1493" height="242" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580165727360" />
-    <state width="1493" height="242" key="GridCell.Tab.1.center" timestamp="1580165727360">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.1.center" timestamp="1580714567225">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714567225" />
     <state width="1493" height="242" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1580165727360" />
-    <state width="1493" height="242" key="GridCell.Tab.1.left" timestamp="1580165727360">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.1.left" timestamp="1580714567224">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714567224" />
     <state width="1493" height="242" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1580165727360" />
-    <state width="1493" height="242" key="GridCell.Tab.1.right" timestamp="1580165727360">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1338" height="328" key="GridCell.Tab.1.right" timestamp="1580714567225">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1338" height="328" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580105914686" />
+    <state width="1338" height="328" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580714567225" />
     <state width="1493" height="242" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1580165727360" />
     <state x="369" y="112" key="SettingsEditor" timestamp="1580153864870">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="461" y="163" key="SettingsEditor/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580065776830" />
-<<<<<<< HEAD
     <state x="369" y="112" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1580153864870" />
     <state x="529" y="273" key="com.intellij.ide.util.TipDialog" timestamp="1580144000374">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="661" y="345" key="com.intellij.ide.util.TipDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580066000450" />
     <state x="529" y="273" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1580144000374" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1580165079865">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580664494120">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580664494120" />
+    <state x="531" y="236" key="run.anything.popup" timestamp="1580691636295">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="531" y="236" key="run.anything.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580691636295" />
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1580165079865" />
     <state x="498" y="189" width="672" height="538" key="search.everywhere.popup" timestamp="1580168845691">
       <screen x="0" y="0" width="1536" height="824" />
-=======
-    <state x="661" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1580610255497">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="661" y="345" key="com.intellij.ide.util.TipDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580610255497" />
-    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1580103911883">
-      <screen x="0" y="0" width="1920" height="1040" />
->>>>>>> prep for rebase
     </state>
     <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1580103911883" />
     <state x="498" y="189" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1580168845691" />
@@ -194,17 +202,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Prog1A.java</url>
-          <line>107</line>
+          <line>109</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Prog1B.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="res[18]" />
-        <watch expression="res[18]" />
-        <watch expression="((BinaryFileDB)this).file" custom="Prog1B.BinaryFileDB" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
