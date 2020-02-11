@@ -1,7 +1,12 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static java.lang.Math.pow;
 
 public class Prog2 {
     // indices for desired fields to be printed for the assignment
@@ -36,22 +41,25 @@ public class Prog2 {
 
         private BinaryFileDB db; // access to the file
         private int maxDepth; // depth of lowest level bucket
-        private Bucket[] directory; // structure holding all buckets
+        private Integer[] directory; // structure holding all bucket pointers, Integer so all entries are initialized to null
+        private HashBucketFile hashBucketFile; // maintain pointer to hash bucket file
+        private int numEntries; // number of entries in the index
 
         public Index(BinaryFileDB db) {
             this.db = db;
             this.maxDepth = 1;
-            this.directory = new Bucket[KEY_CARDINALITY];
-            for (int i = 0; i < KEY_CARDINALITY; i++) {
-                directory[i] = new Bucket(maxDepth, i);
-            }
+            this.directory = new Integer[KEY_CARDINALITY];
+            this.hashBucketFile = new HashBucketFile();
+            this.numEntries = 0;
 
             // insert pointers to all elements from the db file
             for (int index = 0; index < db.getNumEntries(); index++) {
                 try {
                     int issue = (Integer) db.get(index)[KEY_INDEX]; // issue value of the object at the given index
-                    if (issue == -1) continue;
+                    if (issue == -1)
+                        continue;
                     insert(issue, index);
+                    numEntries++;
                 } catch (ClassCastException ex) {
                     continue;
                 }
@@ -60,64 +68,70 @@ public class Prog2 {
 
         private void insert(int key, int value) {
             BucketEntry thisEntry = new BucketEntry(key, value); // bucket entry to be inserted
-            int hash = key / (int) Math.pow(KEY_CARDINALITY, 6 - maxDepth); // hashcode of the issue number
+            final int hash = key / (int) pow(KEY_CARDINALITY, KEY_DIGITS - maxDepth); // hashcode of the issue number
 
-            if (directory[hash].size() == Bucket.BUCKET_MAX_SIZE) { // bucket is full, time to split
-                Bucket thisBucket = directory[hash]; // temporarily store bucket to be split
+            if (directory[hash] == null) {
+                directory[hash] = hashBucketFile.createBucket(maxDepth); // set pointer to new bucket
+                hashBucketFile.addElementToBucket(directory[hash], thisEntry);
+            }
+            else if (!hashBucketFile.addElementToBucket(directory[hash], thisEntry)) { // bucket is full, time to split
+                Bucket thisBucket = hashBucketFile.getBucket(directory[hash]); // temporarily store bucket to be split
 
                 if (thisBucket.getDepth() == maxDepth) { // bucket is lowest level, allocate new directory
                     if (maxDepth == KEY_DIGITS) { // cannot split any further, and bucket is full
                         throw new RuntimeException("Error: element cannot be inserted, bucket is full at max depth");
                     }
 
-                    Bucket[] newDirectory = new Bucket[directory.length * KEY_CARDINALITY]; // allocate new directory
+                    Integer[] newDirectory = new Integer[directory.length * KEY_CARDINALITY]; // allocate new directory
                     maxDepth++;
 
-                    // redistribute bucket pointers
+                    // keep existing pointers to unchanged buckets
                     for (int i = 0; i < directory.length; i++) {
                         for (int j = KEY_CARDINALITY * i; j < KEY_CARDINALITY * (i + 1); j++) {
-                            if (thisBucket.getParents().contains(i)) { // reset all pointers that point to the split bucket
-                                newDirectory[j] = new Bucket(maxDepth, j);
-                            } else { // keep existing pointers to unchanged buckets
-                                newDirectory[j] = directory[i];
-                                directory[i].getParents().add(j);
-                                directory[i].getParents().removeFirstOccurrence(i); // remove outdated parent pointers
-                            }
+                            if (i != hash) newDirectory[j] = directory[i];
                         }
                     }
+
                     this.directory = newDirectory;
 
-                    // reinsert contents of split bucket
-                    thisBucket.forEach(entry -> insert(entry.getKey(), entry.getIndex()));
+                    // reinsert elements in bucket
+                    Arrays.asList(thisBucket.getEntries()).forEach(entry -> insert(entry.getKey(), entry.getIndex()));
+                    insert(key, value);
                 } else { // split existing bucket
-                    thisBucket.getParents().forEach(parent -> {
-                        directory[parent] = new Bucket(thisBucket.depth + 1, parent);
-                    });
+                    // reset existing pointers to bucket
+                    final int oldHash = key / (int) pow(KEY_CARDINALITY, KEY_DIGITS - thisBucket.getDepth()); // old hashcode of the issue number, at its depth
+                    final int depthDiffFac = (int) pow(KEY_CARDINALITY, maxDepth - thisBucket.getDepth()); // factor of difference between the old hash and this one
+                    for (int i = oldHash * depthDiffFac; i < (oldHash + 1) * depthDiffFac; i++) {
+                        directory[i] = null;
+                    }
 
                     // reinsert elements in the bucket
-                    thisBucket.forEach(item -> insert(item.getKey(), item.getIndex()));
+                    Arrays.asList(thisBucket.getEntries()).forEach(entry -> insert(entry.getKey(), entry.getIndex()));
+                    insert(key, value);
                 }
-            } else {
-                directory[hash].add(thisEntry);
             }
         }
 
         public List<Object[]> query(String prefix) {
             List<Object[]> retval = new LinkedList<>(); // return value
 
-            int matchLength = prefix.length();
+            int matchLength = prefix.length(); // store length of prefix
+            Bucket thisBucket = null;
             try {
                 if (matchLength > KEY_DIGITS) throw new NumberFormatException();
                 if (matchLength >= maxDepth) { // only one bucket to search, since prefix length is greater than hashcode digit length
                     int hash = Integer.parseInt(prefix.substring(0, maxDepth)); // hash value of the prefix
 
-                    directory[hash].forEach(entry -> {
+                    if (directory[hash] == null) return retval;
+                    thisBucket = hashBucketFile.getBucket(directory[hash]);
+
+                    Arrays.asList(thisBucket.getEntries()).forEach(entry -> {
                         String keyStr = String.format("%0" + KEY_DIGITS + "d", entry.getKey()); // key integer to 6 char string
 
                         if (keyStr.startsWith(prefix)) retval.add(db.get(entry.getIndex()));
                     });
                 } else {
-                    Set<Bucket> reported = new HashSet<>(); // maintain pointers to buckets already reported
+                    Set<Integer> reported = new HashSet<>(); // maintain pointers to buckets already reported
 
                     // search all buckets potentially with the given prefix, indices between values given by leftHash and rightHash
                     String leftHashStr = prefix, rightHashStr = prefix;
@@ -132,10 +146,13 @@ public class Prog2 {
                     while (rightHashStr.length() < maxDepth) rightHashStr += "0";
                     rightHash = Integer.parseInt(rightHashStr);
 
+                    // search over buckets
                     for (int i = leftHash; i < rightHash; i++) {
-                        if (!reported.contains(directory[i])) {
+                        if (directory[i] == null) continue;
+                        else if (!reported.contains(directory[i])) { // ignore buckets already reported
                             reported.add(directory[i]);
-                            directory[i].forEach(entry -> {
+                            thisBucket = hashBucketFile.getBucket(directory[i]);
+                            Arrays.asList(thisBucket.getEntries()).forEach(entry -> {
                                 String keyStr = String.format("%0" + KEY_DIGITS + "d", entry.getKey()); // key integer to 6 char string
                                 if (keyStr.startsWith(prefix)) retval.add(db.get(entry.getIndex()));
                             });
@@ -150,29 +167,123 @@ public class Prog2 {
         }
     }
 
-    public static class Bucket extends LinkedList<BucketEntry> {
-        public static int BUCKET_MAX_SIZE = 250; // max elements in a bucket
+    public static class HashBucketFile {
+        public static final String FILE_NAME = "hash_bucket_file.bin"; // file name for hash bucket file
+
+        /*
+            4 bytes                           ------ integer number of elements in bucket
+            4 bytes                           ------ integer depth of bucket
+        */
+        public static final int BUCKET_METADATA_SIZE = 4 + 4;
+        public static final int BUCKET_SIZE = BUCKET_METADATA_SIZE + Bucket.BUCKET_MAX_ENTRIES * BucketEntry.ENTRY_SIZE; // size of bucket in bytes
+
+        private RandomAccessFile randomAccessFile; // file pointer for reading and writing
+        private int numBuckets; // number of buckets in the hash bucket file
+
+        public HashBucketFile() {
+            try {
+                randomAccessFile = new RandomAccessFile(new File(FILE_NAME), "rw");
+            }
+            catch (IOException ex) {
+                System.out.println("Error: Could not create RAF.");
+                System.exit(1);
+            }
+
+            numBuckets = 0;
+        }
+
+        public int createBucket(int depth) {
+            int createdIndex = numBuckets++; // index of created bucket
+            int startingFileIndex = getStartFileIndex(createdIndex); // index into RAF
+            try {
+                randomAccessFile.seek(startingFileIndex);
+                randomAccessFile.writeInt(0); // write size of bucket
+                randomAccessFile.writeInt(depth);
+            } catch (IOException ex) {
+                System.out.println("Error: write failed. Out of space?");
+                System.exit(1);
+            }
+            return createdIndex;
+        }
+
+        public boolean addElementToBucket(int bucketIndex, BucketEntry entry) {
+            int startingFileIndex = getStartFileIndex(bucketIndex); // index into RAF
+            try {
+                randomAccessFile.seek(startingFileIndex);
+                int bucketSize = randomAccessFile.readInt(); // read size of bucket
+                if (bucketSize == Bucket.BUCKET_MAX_ENTRIES) return false; // no more space to be inserted
+
+                // go to position in RAF for entry to be inserted
+                randomAccessFile.seek(startingFileIndex + BUCKET_METADATA_SIZE + bucketSize * BucketEntry.ENTRY_SIZE);
+
+                // write entry
+                randomAccessFile.writeInt(entry.getKey());
+                randomAccessFile.writeInt(entry.getIndex());
+
+                // increment size
+                randomAccessFile.seek(startingFileIndex);
+                randomAccessFile.writeInt(bucketSize + 1);
+            } catch (IOException ex) {
+                System.out.println("Error: file IO failed. Out of space?");
+                System.exit(1);
+            }
+            return true;
+        }
+
+        public Bucket getBucket(int bucketIndex) {
+            int startingFileIndex = getStartFileIndex(bucketIndex); // index into RAF
+            if (bucketIndex < numBuckets && bucketIndex >= 0) {
+                try {
+                    randomAccessFile.seek(startingFileIndex);
+                    int bucketSize = randomAccessFile.readInt();
+                    int bucketDepth = randomAccessFile.readInt();
+                    Bucket bucket = new Bucket(bucketDepth, new BucketEntry[bucketSize]); // initialize bucket in memory
+
+                    // read entries
+                    for (int i = 0; i < bucketSize; i++) {
+                        // read entry
+                        int key = randomAccessFile.readInt();
+                        int index = randomAccessFile.readInt();
+
+                        bucket.getEntries()[i] = new BucketEntry(key, index);
+                    }
+                    return bucket;
+                } catch (IOException ex) {
+                    System.out.println("Error: read failed.");
+                    System.exit(1);
+                }
+            }
+            return null;
+        }
+
+        private int getStartFileIndex(int hashBucketIndex) {
+            return hashBucketIndex * BUCKET_SIZE;
+        }
+    }
+
+    public static class Bucket {
+        public static int BUCKET_MAX_ENTRIES = 250; // max elements in a bucket
 
         private final int depth; // depth of bucket
-        private final LinkedList<Integer> parents; // pointer to location in directory, as an integer index
+        private final BucketEntry[] entries; // entries in bucket
 
-        public Bucket(int depth, int parent) {
-            super();
+        public Bucket(int depth, BucketEntry[] entries) {
             this.depth = depth;
-            this.parents = new LinkedList<>();
-            this.parents.add(parent);
+            this.entries = entries;
         }
 
         public int getDepth() {
             return depth;
         }
 
-        public LinkedList<Integer> getParents() {
-            return parents;
+        public BucketEntry[] getEntries() {
+            return entries;
         }
     }
 
     public static class BucketEntry {
+        public static final int ENTRY_SIZE = 4 + 4; // size, in bytes, of the info in an entry
+
         private final int key;
         private final int index;
 
