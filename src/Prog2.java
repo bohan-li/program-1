@@ -1,21 +1,36 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.pow;
 
+/**
+ * CSC 460 Assignment 2
+ * Lester McCann, Prathyusha Butti
+ * Due 02/12/2020
+ *
+ * @author Bohan Li
+ *
+ * This assignment presented the task of implementing an efficient query structure of a database iin extendable hashing
+ * using an in-memory directory and hash bucket file containing all file buckets. The program builds an index structure
+ * of a database by inserting all elements one by one, and then gives users the ability to query the DB by entering a
+ * numerical, up to 6 digit number representing the query prefix of the issue field in the DB.
+ *
+ * This program was compiled using java 8. It relies on having "SCDB2019.bin" in the same directory as the compilation
+ * folder, which it uses to read the binary file from. It also requires file read-write permissions in the working
+ * directory, since it writes to a hash bucket file.
+ *
+ * Usage: java Prog2
+ * Enter stdin queries to examine output: Ex. 0104
+ */
 public class Prog2 {
     // indices for desired fields to be printed for the assignment
     public static int CASEID_INDEX = 0, DATEDECISION_INDEX = 4, CASENAME_INDEX = 14;
+    public static String BIN_FILE_NAME = "SCDB2019.bin"; // file name for be binary file
 
     public static void main(String args[]) throws IOException {
-        if (args == null || args.length < 1) throw new RuntimeException("Usage java Prog1B [file path]");
-        String binFilename = args[0]; // filename for the .bin file
-        RandomAccessFile file = new RandomAccessFile(new File(binFilename), "r"); // file providing access to the DB
+        RandomAccessFile file = new RandomAccessFile(new File(BIN_FILE_NAME), "r"); // file providing access to the DB
         Index index = new Index(new BinaryFileDB(file)); // DB object constructed using the file
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
@@ -34,6 +49,24 @@ public class Prog2 {
         System.out.println(entry[CASEID_INDEX] + " " + entry[DATEDECISION_INDEX] + " " + entry[CASENAME_INDEX] + " " + entry[Index.KEY_INDEX]);
     }
 
+    /**
+     * @class Index
+     * @author Bohan Li
+     *
+     * Overhead class managing the entire extendable hashing structure.
+     *
+     * Constants:
+     * KEY_INDEX - index of the DB that the hash is built on
+     * KEY_CARDINALITY - number of different characters in each digit of the index prefix
+     * KEY_DIGITS - number of digits in the index field
+     *
+     * Constructor:
+     * public Index(BinaryFileDB db) - constructs the index using the DB given by the binary file
+     *
+     * Methods:
+     * public List<Object[]> query(String prefix)
+     * private void insert(int key, int value)
+     */
     public static class Index {
         public static int KEY_INDEX = 39; // field that directory is indexed on
         public static int KEY_CARDINALITY = 10; // number of different elements in key char, 10 since numeric
@@ -56,7 +89,7 @@ public class Prog2 {
             for (int index = 0; index < db.getNumEntries(); index++) {
                 try {
                     int issue = (Integer) db.get(index)[KEY_INDEX]; // issue value of the object at the given index
-                    if (issue == -1)
+                    if (issue == -1) // ignore blank indices
                         continue;
                     insert(issue, index);
                     numEntries++;
@@ -66,6 +99,16 @@ public class Prog2 {
             }
         }
 
+        /**
+         * insert(key, value)
+         *
+         * Helper method for inserting a key, value pair into the index structure.
+         * Post-condition: the new key, value pair is inserted into the Index unless there is no more space, in which
+         * a RuntimeException is thrown
+         *
+         * @param key
+         * @param value
+         */
         private void insert(int key, int value) {
             BucketEntry thisEntry = new BucketEntry(key, value); // bucket entry to be inserted
             final int hash = key / (int) pow(KEY_CARDINALITY, KEY_DIGITS - maxDepth); // hashcode of the issue number
@@ -112,11 +155,20 @@ public class Prog2 {
             }
         }
 
+        /**
+         * List<Object[]> query(String prefix)
+         *
+         * Returns a list of all entries in the DB starting with the provided prefix, a numeric string of up to
+         * 6 characters.
+         *
+         * @param prefix the query prefix
+         * @return list of entries, represented as Object[]
+         */
         public List<Object[]> query(String prefix) {
             List<Object[]> retval = new LinkedList<>(); // return value
 
             int matchLength = prefix.length(); // store length of prefix
-            Bucket thisBucket = null;
+            Bucket thisBucket = null; // store bucket of query
             try {
                 if (matchLength > KEY_DIGITS) throw new NumberFormatException();
                 if (matchLength >= maxDepth) { // only one bucket to search, since prefix length is greater than hashcode digit length
@@ -167,15 +219,36 @@ public class Prog2 {
         }
     }
 
+    /**
+     * HashBucketFile
+     *
+     * @author Bohan Li
+     *
+     * This class is the interface with the hash bucket file. Each bucket stores metadata and has space for all of
+     * its entries.
+     *
+     * Constants:
+     * FILE_NAME - file name of the hash bucket file
+     *
+     * Constructor:
+     * public HashBucketFile() - initializes empty hash bucket file
+     *
+     * Methods:
+     * int createBucket(int depth)
+     * boolean addElementToBucket(int bucketIndex, BucketEntry entry)
+     * Bucket getBucket(int bucketIndex)
+     * int getStartFileIndex(int hashBucketIndex)
+     */
     public static class HashBucketFile {
         public static final String FILE_NAME = "hash_bucket_file.bin"; // file name for hash bucket file
 
         /*
-            4 bytes                           ------ integer number of elements in bucket
-            4 bytes                           ------ integer depth of bucket
+            Metadata:
+            4 bytes ------ integer number of elements in bucket
+            4 bytes ------ integer depth of bucket
         */
-        public static final int BUCKET_METADATA_SIZE = 4 + 4;
-        public static final int BUCKET_SIZE = BUCKET_METADATA_SIZE + Bucket.BUCKET_MAX_ENTRIES * BucketEntry.ENTRY_SIZE; // size of bucket in bytes
+        private static final int BUCKET_METADATA_SIZE = 4 + 4; // size of metadata, bytes
+        private static final int BUCKET_SIZE = BUCKET_METADATA_SIZE + Bucket.BUCKET_MAX_ENTRIES * BucketEntry.ENTRY_SIZE; // size of bucket in bytes
 
         private RandomAccessFile randomAccessFile; // file pointer for reading and writing
         private int numBuckets; // number of buckets in the hash bucket file
@@ -192,6 +265,17 @@ public class Prog2 {
             numBuckets = 0;
         }
 
+        /**
+         * createBucket
+         *
+         * This method allocates space for a bucket, storing its depth as metadata.
+         * Pre-conditions: there needs to be enough space to write file metadata to the hash bucket file
+         * Post-conditions: there will be space allocated for the new bucket, so any reads and writes need sufficient
+         * filesystem space
+         *
+         * @param depth depth of the bucket in the extendable hashing structure
+         * @return the index of the bucket, for which the bucket can be retrieved by calling getBucket
+         */
         public int createBucket(int depth) {
             int createdIndex = numBuckets++; // index of created bucket
             int startingFileIndex = getStartFileIndex(createdIndex); // index into RAF
@@ -206,7 +290,20 @@ public class Prog2 {
             return createdIndex;
         }
 
+        /**
+         * addElementToBucket
+         *
+         * This method takes the bucket entry and writes it to the appropriate bucket in the hash bucket file.
+         * Pre-conditions: index must be valid into the file, otherwise IndexOutOfBoundsException is thrown
+         * Post-conditions: the entry is written to the file, unless the bucket is out of space
+         *
+         * @throws IndexOutOfBoundsException
+         * @param bucketIndex id of bucket, provided by createBucket
+         * @param entry entry to be written
+         * @return true if add was successful, false if the bucket is max size and cannot add any more elements
+         */
         public boolean addElementToBucket(int bucketIndex, BucketEntry entry) {
+            if (bucketIndex < 0 || bucketIndex >= numBuckets) throw new IndexOutOfBoundsException();
             int startingFileIndex = getStartFileIndex(bucketIndex); // index into RAF
             try {
                 randomAccessFile.seek(startingFileIndex);
@@ -230,7 +327,18 @@ public class Prog2 {
             return true;
         }
 
+        /**
+         * getBucket
+         *
+         * This method retrieves a bucket of the data written into the file memory.
+         * Pre-conditions: index of bucket must be valid
+         *
+         * @throws IndexOutOfBoundsException
+         * @param bucketIndex the id of the bucket, from createBucket
+         * @return a bucket object containing its contents and metadata
+         */
         public Bucket getBucket(int bucketIndex) {
+            if (bucketIndex < 0 || bucketIndex >= numBuckets) throw new IndexOutOfBoundsException();
             int startingFileIndex = getStartFileIndex(bucketIndex); // index into RAF
             if (bucketIndex < numBuckets && bucketIndex >= 0) {
                 try {
@@ -256,11 +364,33 @@ public class Prog2 {
             return null;
         }
 
+        /**
+         * getStartFileIndex
+         *
+         * Helper function for file indexing math.
+         *
+         * @param hashBucketIndex bucket id indexing into the hash bucket
+         * @return the offset into the file, in bytes
+         */
         private int getStartFileIndex(int hashBucketIndex) {
             return hashBucketIndex * BUCKET_SIZE;
         }
     }
 
+    /**
+     * Bucket
+     *
+     * @author Bohan Li
+     *
+     * Storage class for bucket information in memory.
+     *
+     * Constants:
+     * BUCKET_MAX_ENTIRES - max number of elements in a bucket
+     *
+     * Methods:
+     * BucketEntry[] getEntries()
+     * int getDepth()
+     */
     public static class Bucket {
         public static int BUCKET_MAX_ENTRIES = 250; // max elements in a bucket
 
@@ -281,11 +411,25 @@ public class Prog2 {
         }
     }
 
+    /**
+     * BucketEntry
+     *
+     * @author Bohan Li
+     *
+     * Storage class for bucket entry information. Contains a hash bucket index and the hash key.
+     *
+     * Constants:
+     * ENTRY_SIZE - size of entry, bytes
+     *
+     * Methods:
+     * int getKey()
+     * int getIndex()
+     */
     public static class BucketEntry {
         public static final int ENTRY_SIZE = 4 + 4; // size, in bytes, of the info in an entry
 
-        private final int key;
-        private final int index;
+        private final int key; // hash key
+        private final int index; // hash bucket index
 
         public BucketEntry(int key, int index) {
             this.key = key;
